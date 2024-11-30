@@ -4,9 +4,9 @@ from .models import Marca
 
 # Register your models here.
 class MarcaAdmin(admin.ModelAdmin):
-    list_display = ('marca', 'logo', 'revenda')
-    list_editable = ('logo', 'revenda')
-    search_fields = ('marca', 'revenda')
+    list_display = ('marca', 'logo')
+    # list_editable = ('logo')
+    # search_fields = ('marca')
     list_per_page = 10
 
 
