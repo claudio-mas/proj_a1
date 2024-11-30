@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import Marca, Grupo, Produto
+from django.utils.html import format_html
 
 
 # Register your models here.
@@ -17,9 +18,15 @@ class GrupoAdmin(admin.ModelAdmin):
 
 
 class ProdutoAdmin(admin.ModelAdmin):
-    list_display = ('produto', 'idgrupo', 'preco', 'imagem')
-    list_editable = ('preco', 'imagem')
+    list_display = ('produto', 'idgrupo', 'preco_formatado', 'imagem')
+    # list_editable = ('preco_formatado', 'imagem')
     search_fields = ('produto', 'marca')
+
+    def preco_formatado(self, obj):
+        if obj.preco is None:
+            return "R$ 0,00"
+        return f"R$ {obj.preco:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+    preco_formatado.short_description = "Preço"
 
 
 admin.site.register(Marca, MarcaAdmin)

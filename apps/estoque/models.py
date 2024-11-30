@@ -44,7 +44,7 @@ class Produto(models.Model):
     produto = models.CharField(max_length=50, default="", verbose_name="Produto")
     descricao = models.TextField(null=True, blank=True, verbose_name="Descrição")
     imagem = models.ImageField(upload_to='produtos/', null=True, blank=True, verbose_name="Imagem")
-    preco = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Preço")
+    preco = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True, verbose_name="Preço")
 
     class Meta:
         verbose_name_plural = "2.3- Produtos"
