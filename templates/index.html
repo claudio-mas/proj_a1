@@ -1,50 +1,11 @@
 {% extends 'base.html' %}
 
-{% block title %}Marcas{% endblock %}
+{% block title %}A1{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <h1 class="text-center mb-4">Lista de Marcas</h1>
-    {% if marcas %}
-        <table class="table table-bordered table-hover">
-            <thead class="thead-dark">
-                <tr>
-                    <th>Marca</th>
-                    <th>Logomarca</th>
-                    <th>Revenda</th>
-                    <th>CNPJ</th>
-                    <th>Endereço</th>
-                    <th>Telefone</th>
-                    <th>E-mail</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for marca in marcas %}
-                <tr>
-                    <td>{{ marca.marca }}</td>
-                    <td>
-                        {% if marca.logo %}
-                            <img src="{{ marca.logo.url }}" alt="{{ marca.marca }}" style="max-width: 100px;">
-                        {% else %}
-                            Sem logomarca
-                        {% endif %}
-                    </td>
-                    <td>{{ marca.revenda }}</td>
-                    <td>{{ marca.cnpj }}</td>
-                    <td>
-                        {{ marca.endereco }}, {{ marca.numero }}<br>
-                        {{ marca.complemento }}<br>
-                        {{ marca.bairro }} - {{ marca.cidade }} - {{ marca.uf }}<br>
-                        CEP: {{ marca.cep }}
-                    </td>
-                    <td>{{ marca.telefone }}</td>
-                    <td>{{ marca.email }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    {% else %}
-        <p>Nenhuma marca encontrada.</p>
-    {% endif %}
-</div>
+
+    <div class="container-fluid d-flex justify-content-center align-items-center vh-100">
+        <h1 class="display-4">Sistema de Administração de Orçamentos</h1>
+    </div>
+
 {% endblock %}

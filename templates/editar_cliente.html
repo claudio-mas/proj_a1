@@ -1,0 +1,246 @@
+{% extends 'base.html' %}
+
+{% block title %}Editar Cliente{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1 class="my-4">Editar Cliente</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-4">
+                <h3 class="mb-3">Informações Pessoais</h3>
+                <div class="form-group">
+                    {{ form.nome.label_tag }}
+                    {{ form.nome }}
+                    {% if form.nome.help_text %}
+                        <small class="form-text text-muted">{{ form.nome.help_text }}</small>
+                    {% endif %}
+                    {% for error in form.nome.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        {{ form.cpf.label_tag }}
+                        {{ form.cpf }}
+                        {% if form.cpf.help_text %}
+                            <small class="form-text text-muted">{{ form.cpf.help_text }}</small>
+                        {% endif %}
+                        {% for error in form.cpf.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group col-md-6">
+                        {{ form.rg.label_tag }}
+                        {{ form.rg }}
+                        {% if form.rg.help_text %}
+                            <small class="form-text text-muted">{{ form.rg.help_text }}</small>
+                        {% endif %}
+                        {% for error in form.rg.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        {{ form.cnpj.label_tag }}
+                        {{ form.cnpj }}
+                        {% if form.cnpj.help_text %}
+                            <small class="form-text text-muted">{{ form.cnpj.help_text }}</small>
+                        {% endif %}
+                        {% for error in form.cnpj.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group col-md-6">
+                        {{ form.cro.label_tag }}
+                        {{ form.cro }}
+                        {% if form.cro.help_text %}
+                            <small class="form-text text-muted">{{ form.cro.help_text }}</small>
+                        {% endif %}
+                        {% for error in form.cro.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="form-group">
+                    {{ form.datanasc.label_tag }}
+                    {{ form.datanasc }}
+                    {% if form.datanasc.help_text %}
+                        <small class="form-text text-muted">{{ form.datanasc.help_text }}</small>
+                    {% endif %}
+                    {% for error in form.datanasc.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-md-4">
+                <h3 class="mb-3">Endereço</h3>
+                <div class="form-group">
+                    {{ form.endereco.label_tag }}
+                    {{ form.endereco }}
+                    {% if form.endereco.help_text %}
+                        <small class="form-text text-muted">{{ form.endereco.help_text }}</small>
+                    {% endif %}
+                    {% for error in form.endereco.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        {{ form.numero.label_tag }}
+                        {{ form.numero }}
+                        {% if form.numero.help_text %}
+                            <small class="form-text text-muted">{{ form.numero.help_text }}</small>
+                        {% endif %}
+                        {% for error in form.numero.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group col-md-6">
+                        {{ form.complemento.label_tag }}
+                        {{ form.complemento }}
+                        {% if form.complemento.help_text %}
+                            <small class="form-text text-muted">{{ form.complemento.help_text }}</small>
+                        {% endif %}
+                        {% for error in form.complemento.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        {{ form.bairro.label_tag }}
+                        {{ form.bairro }}
+                        {% if form.bairro.help_text %}
+                            <small class="form-text text-muted">{{ form.bairro.help_text }}</small>
+                        {% endif %}
+                        {% for error in form.bairro.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group col-md-6">
+                        {{ form.cidade.label_tag }}
+                        {{ form.cidade }}
+                        {% if form.cidade.help_text %}
+                            <small class="form-text text-muted">{{ form.cidade.help_text }}</small>
+                        {% endif %}
+                        {% for error in form.cidade.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        {{ form.uf.label_tag }}
+                        {{ form.uf }}
+                        {% if form.uf.help_text %}
+                            <small class="form-text text-muted">{{ form.uf.help_text }}</small>
+                        {% endif %}
+                        {% for error in form.uf.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group col-md-6">
+                        {{ form.cep.label_tag }}
+                        {{ form.cep }}
+                        {% if form.cep.help_text %}
+                            <small class="form-text text-muted">{{ form.cep.help_text }}</small>
+                        {% endif %}
+                        {% for error in form.cep.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <h3 class="mb-3">Informações de Contato</h3>
+                <div class="form-group">
+                    {{ form.telefone.label_tag }}
+                    {{ form.telefone }}
+                    {% if form.telefone.help_text %}
+                        <small class="form-text text-muted">{{ form.telefone.help_text }}</small>
+                    {% endif %}
+                    {% for error in form.telefone.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                <div class="form-row align-items-center">
+                    <div class="form-group col-md-6">
+                        {{ form.celular.label_tag }}
+                        {{ form.celular }}
+                        {% if form.celular.help_text %}
+                            <small class="form-text text-muted">{{ form.celular.help_text }}</small>
+                        {% endif %}
+                        {% for error in form.celular.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group col-md-6 d-flex align-items-center">
+                        {{ form.whatsapp.label_tag }}
+                        {{ form.whatsapp }}
+                        {% if form.whatsapp.help_text %}
+                            <small class="form-text text-muted">{{ form.whatsapp.help_text }}</small>
+                        {% endif %}
+                        {% for error in form.whatsapp.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="form-group">
+                    {{ form.email.label_tag }}
+                    {{ form.email }}
+                    {% if form.email.help_text %}
+                        <small class="form-text text-muted">{{ form.email.help_text }}</small>
+                    {% endif %}
+                    {% for error in form.email.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                <div class="form-group">
+                    {{ form.instagram.label_tag }}
+                    {{ form.instagram }}
+                    {% if form.instagram.help_text %}
+                        <small class="form-text text-muted">{{ form.instagram.help_text }}</small>
+                    {% endif %}
+                    {% for error in form.instagram.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="mt-4">
+            <button type="submit" class="btn btn-primary">Salvar</button>
+            <a href="{% url 'clientes' %}" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    $(document).ready(function(){
+        // Aplicar máscaras
+        $('#id_uf').inputmask('AA');
+        $('#id_cnpj').inputmask('99.999.999/9999-99');
+        $('#id_cpf').inputmask('999.999.999-99');
+        $('#id_celular').inputmask('(99) 99999-9999');
+        $('#id_telefone').inputmask('(99) 9999-9999');
+        $('#id_cep').inputmask('99999-999');
+        $('#id_datanasc').inputmask('99/99/9999');
+        $('#id_datanasc').datepicker({
+            format: 'dd/mm/yyyy',
+            language: 'pt-BR', // Idioma para o calendário
+            autoclose: true, // Fechar o calendário ao selecionar a data
+            todayHighlight: true, // Realçar a data atual
+            todayBtn: true, // Mostrar o botão "Hoje"
+            clearBtn: true, // Mostrar o botão "Limpar"
+            orientation: 'bottom left', // Posição do calendário
+            startDate: '01/01/1900', // Data mínima
+            endDate: '31/12/2020' // Data máxima
+        });
+    });
+</script>
+{% endblock %}

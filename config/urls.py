@@ -17,14 +17,19 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from apps.estoque.views import index
-from apps.clientes.views import clientes
+from apps.clientes.views import lista_clientes
 from django.conf import settings
 from django.conf.urls.static import static
+from apps.clientes import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index, name='home'),
-    path('clientes/', clientes, name='clientes'),
+    path('clientes/', lista_clientes, name='clientes'),
+    path('editar/<int:id>/', views.editar_cliente, name='editar_cliente'),
+    path('excluir/<int:pk>/', views.confirmar_exclusao, name='confirmar_exclusao'),
+    path('excluir/<int:pk>/confirmar/', views.excluir_cliente, name='excluir_cliente'),
+    path('novo/', views.novo_cliente, name='novo_cliente'),
 ]
 
 if settings.DEBUG:
