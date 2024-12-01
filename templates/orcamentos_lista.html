@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Orçamentos</title>
+    <style>
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        table {
+            border-collapse: collapse;
+            margin: 0 auto;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Lista de Orçamentos</h1>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Nº Orçamento</th>
+                    <th>Data</th>
+                    <th>Cliente</th>
+                    <th>Descrição</th>
+                    <th>Validade</th>
+                    <th>Valor Total</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for orcamento in orcamentos %}
+                    <tr>
+                        <td>{{ orcamento.numero }}</td>
+                        <td>{{ orcamento.data }}</td>
+                        <td>{{ orcamento.idcliente }}</td>
+                        <td>{{ orcamento.descricao }}</td>
+                        <td>{{ orcamento.validade }}</td>
+                        <td>{{ orcamento.total }}</td>
+                        <td>{{ orcamento.status }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
+{% endblock %}
