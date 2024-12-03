@@ -21,7 +21,9 @@ from apps.clientes.views import lista_clientes
 from django.conf import settings
 from django.conf.urls.static import static
 from apps.clientes import views
-from apps.orcamentos.views import lista_orcamentos
+from apps.orcamentos.views import lista_orcamentos, editar_orcamento, excluir_orcamento
+from apps.orcamentos.views import OrcamentoCreateView
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -32,6 +34,9 @@ urlpatterns = [
     path('excluir/<int:pk>/confirmar/', views.excluir_cliente, name='excluir_cliente'),
     path('novo/', views.novo_cliente, name='novo_cliente'),
     path('lista-orcamentos/', lista_orcamentos, name='lista_orcamentos'),
+    path('orcamento/novo/', OrcamentoCreateView.as_view(), name='novo_orcamento'),
+    path('orcamento/editar/<int:id>/', editar_orcamento, name='editar_orcamento'),
+    path('orcamento/excluir/<int:id>/', excluir_orcamento, name='excluir_orcamento'),
 ]
 
 if settings.DEBUG:

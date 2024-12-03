@@ -1,12 +1,11 @@
 {% extends 'base.html' %}
 
-
 {% block content %}
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Lista de Orçamentos</title>
+    <title>Orçamentos</title>
     <style>
         .container {
             display: flex;
@@ -22,12 +21,32 @@
 
         table {
             border-collapse: collapse;
-            margin: 0 auto;
+            margin: 20px 0;
         }
 
         th, td {
             padding: 10px;
             text-align: center;
+        }
+
+        .btn-novo {
+            margin-top: 20px;
+        }
+
+        /* Estilos para os botões de ação */
+        .btn-acao {
+            margin: 0 5px;
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+        .btn-editar {
+            background-color: #007bff;
+            color: white;
+        }
+        .btn-excluir {
+            background-color: #dc3545;
+            color: white;
         }
     </style>
 </head>
@@ -40,10 +59,12 @@
                     <th>Nº Orçamento</th>
                     <th>Data</th>
                     <th>Cliente</th>
-                    <th>Descrição</th>
                     <th>Validade</th>
                     <th>Valor Total</th>
                     <th>Status</th>
+                    <th>Observações</th>
+                    <!-- Novas colunas para ações -->
+                    <th>Ações</th>
                 </tr>
             </thead>
             <tbody>
@@ -52,14 +73,22 @@
                         <td>{{ orcamento.numero }}</td>
                         <td>{{ orcamento.data }}</td>
                         <td>{{ orcamento.idcliente }}</td>
-                        <td>{{ orcamento.descricao }}</td>
                         <td>{{ orcamento.validade }}</td>
                         <td>{{ orcamento.total }}</td>
                         <td>{{ orcamento.status }}</td>
+                        <td>{{ orcamento.descricao }}</td>
+                        <!-- Botões de ação -->
+                        <td>
+                            <a href="{% url 'editar_orcamento' orcamento.id %}" class="btn-acao btn-editar">Editar</a>
+                            <a href="{% url 'excluir_orcamento' orcamento.id %}" class="btn-acao btn-excluir" onclick="return confirm('Tem certeza que deseja excluir este orçamento?');">Excluir</a>
+                        </td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
+        <div class="btn-novo">
+            <a href="{% url 'novo_orcamento' %}" class="btn btn-primary">Novo Orçamento</a>
+        </div>
     </div>
 </body>
 </html>

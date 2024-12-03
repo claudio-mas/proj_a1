@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="text-center mb-4">Adicionar Orçamento</h1>
+
+    <!-- Seção Informações do Orçamento -->
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <i class="fas fa-info-circle"></i> Informações do Orçamento
+        </div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-6 mb-3">                      
+                        {{ form.numero|as_crispy_field }}
+                    </div>
+                    <div class="col-md-6 mb-3">                        
+                        {{ form.idcliente|as_crispy_field }}
+                    </div>
+                    <div class="col-md-6 mb-3">                        
+                        {{ form.data|as_crispy_field }}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        {{ form.validade|as_crispy_field }}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        {{ form.total|as_crispy_field }}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        {{ form.status|as_crispy_field }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        {{ form.descricao|as_crispy_field }}
+                    </div>
+                </div>
+                    <!-- Botão Salvar -->
+                <div class="text-center">
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-save"></i> Salvar Orçamento
+                    </button>
+                    <a href="{% url 'lista_orcamentos' %}" class="btn btn-danger">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Seção Valores -->
+    <!-- <div class="card mb-4">
+        <div class="card-header bg-secondary text-white">
+            <i class="fas fa-dollar-sign"></i> Valores
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    {{ form.total|as_crispy_field }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    {{ form.status|as_crispy_field }}
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+</div>
+{% endblock %}
