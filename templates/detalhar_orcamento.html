@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="text-center mb-4">Orçamento Nº {{ orcamento.numero }}</h1>
+    <!-- Informações do Orçamento -->
+    <!-- ... apresente dados relevantes do orçamento ... -->
+
+    <!-- Lista de Itens -->
+    <h3 class="mt-4">Ítens do Orçamento</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Produto</th>
+                <th>Periférico</th>
+                <th>Quantidade</th>
+                <th>Valor</th>
+                <th>Desconto</th>
+                <th>Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in itens %}
+                <tr>
+                    <td>{{ item.idproduto }}</td>
+                    <td>{{ item.idproduto2 }}</td>
+                    <td>{{ item.quantidade }}</td>
+                    <td>{{ item.valor }}</td>
+                    <td>{{ item.desconto }}</td>
+                    <td>{{ item.subtotal }}</td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="6">Nenhum item adicionado.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <!-- Botão para adicionar mais itens -->
+    <div class="text-center mt-3">
+        <a href="{% url 'adicionar_item_orcamento' orcamento.id %}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Adicionar Ítem
+        </a>
+        <a href="{% url 'lista_orcamentos' %}" class="btn btn-secondary ml-2">
+            <i class="fas fa-arrow-left"></i> Voltar
+        </a>
+    </div>
+</div>
+{% endblock %}

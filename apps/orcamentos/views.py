@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic.edit import CreateView
-from .models import Orcamento
-from .forms import OrcamentoForm
+from .models import Orcamento, OrcamentoItem
+from .forms import OrcamentoForm, OrcamentoItemForm
 
 
 # def lista_orcamentos(request):
@@ -44,7 +44,8 @@ def editar_orcamento(request, id):
             return redirect('lista_orcamentos')
     else:
         form = OrcamentoForm(instance=orcamento)
-    return render(request, 'orcamento_editar.html', {'form': form})
+    # Passando 'orcamento' no contexto
+    return render(request, 'orcamento_editar.html', {'form': form, 'orcamento': orcamento})
 
 
 def excluir_orcamento(request, id):
@@ -53,6 +54,33 @@ def excluir_orcamento(request, id):
         orcamento.delete()
         return redirect('lista_orcamentos')
     return render(request, 'orcamento_confirmar_exclusao.html', {'orcamento': orcamento})
+
+
+def adicionar_item_orcamento(request, orcamento_id):
+    orcamento = get_object_or_404(Orcamento, id=orcamento_id)
+    if request.method == 'POST':
+        form = OrcamentoItemForm(request.POST)
+        if form.is_valid():
+            item = form.save(commit=False)
+            item.idorcamento = orcamento  # Associa o item ao orçamento
+            try:
+                # Calcula o subtotal
+                item.subtotal = (item.valor * item.quantidade) - item.desconto
+                item.save()
+                return redirect('detalhar_orcamento', orcamento_id=orcamento.id)
+            except Exception as e:
+                form.add_error(None, f"Ocorreu um erro ao salvar o item: {e}")
+        else:
+            print(form.errors)  # Imprime os erros do formulário no console
+    else:
+        form = OrcamentoItemForm()
+    return render(request, 'adicionar_item_orcamento.html', {'form': form, 'orcamento': orcamento})
+
+
+def detalhar_orcamento(request, orcamento_id):
+    orcamento = get_object_or_404(Orcamento, id=orcamento_id)
+    itens = OrcamentoItem.objects.filter(idorcamento=orcamento)
+    return render(request, 'detalhar_orcamento.html', {'orcamento': orcamento, 'itens': itens})
 
 
 class OrcamentoCreateView(CreateView):
