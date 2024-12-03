@@ -4,16 +4,15 @@
 
 {% block content %}
 <div class="container mt-4">
-    <h1 class="text-center mb-4">Adicionar Ítem ao Orçamento Nº {{ orcamento.numero }}</h1>
+    <h1 class="text-center mb-4">Editar Ítem do Orçamento Nº {{ orcamento.numero }}</h1>
 
     <div class="card mb-4">
         <div class="card-header bg-primary text-white">
-            <i class="fas fa-plus"></i> Dados do Ítem
+            <i class="fas fa-edit"></i> Dados do Ítem
         </div>
         <div class="card-body">
             <form method="post">
                 {% csrf_token %}
-                <!-- Exibe erros gerais do formulário -->
                 {% if form.non_field_errors %}
                     <div class="alert alert-danger">
                         {{ form.non_field_errors }}
@@ -39,7 +38,7 @@
                 <!-- Botões de Ação -->
                 <div class="text-center">
                     <button type="submit" class="btn btn-success">
-                        <i class="fas fa-save"></i> Salvar Ítem
+                        <i class="fas fa-save"></i> Atualizar Ítem
                     </button>
                     <a href="{% url 'detalhar_orcamento' orcamento.id %}" class="btn btn-secondary ml-2">
                         <i class="fas fa-times"></i> Cancelar
@@ -49,31 +48,4 @@
         </div>
     </div>
 </div>
-<!-- Inclua o jQuery ou certifique-se de que já está incluído -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<script>
-$(document).ready(function() {
-    // Quando idproduto mudar
-    $('#id_idproduto').change(function() {
-        if ($(this).val()) {
-            // Se idproduto tem valor, desabilita idproduto2
-            $('#id_idproduto2').val('').prop('disabled', true);
-        } else {
-            // Se idproduto está vazio, habilita idproduto2
-            $('#id_idproduto2').prop('disabled', false);
-        }
-    });
-    // Quando idproduto2 mudar
-    $('#id_idproduto2').change(function() {
-        if ($(this).val()) {
-            // Se idproduto2 tem valor, desabilita idproduto
-            $('#id_idproduto').val('').prop('disabled', true);
-        } else {
-            // Se idproduto2 está vazio, habilita idproduto
-            $('#id_idproduto').prop('disabled', false);
-        }
-    });
-});
-</script>
 {% endblock %}

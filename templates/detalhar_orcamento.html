@@ -17,6 +17,7 @@
                 <th>Valor</th>
                 <th>Desconto</th>
                 <th>Subtotal</th>
+                <th>Ações</th>
             </tr>
         </thead>
         <tbody>
@@ -28,10 +29,20 @@
                     <td>{{ item.valor }}</td>
                     <td>{{ item.desconto }}</td>
                     <td>{{ item.subtotal }}</td>
+                    <td>
+                        <!-- Botão Editar -->
+                        <a href="{% url 'editar_item_orcamento' orcamento.id item.id %}" class="btn btn-sm btn-primary">
+                            <i class="fas fa-edit"></i> Editar
+                        </a>
+                        <!-- Botão Excluir -->
+                        <a href="{% url 'excluir_item_orcamento' orcamento.id item.id %}" class="btn btn-sm btn-danger" onclick="return confirm('Tem certeza que deseja excluir este item?');">
+                            <i class="fas fa-trash-alt"></i> Excluir
+                        </a>
+                    </td>
                 </tr>
             {% empty %}
                 <tr>
-                    <td colspan="6">Nenhum item adicionado.</td>
+                    <td colspan="7">Nenhum item adicionado.</td>
                 </tr>
             {% endfor %}
         </tbody>

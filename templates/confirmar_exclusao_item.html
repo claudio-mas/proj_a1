@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="text-center mb-4">Confirmar Exclusão do Ítem</h1>
+    <p>Tem certeza que deseja excluir o item do orçamento Nº {{ orcamento.numero }}?</p>
+    <p><strong>Produto:</strong> {{ item.idproduto }}</p>
+    <p><strong>Periférico:</strong> {{ item.idproduto2 }}</p>
+    <p><strong>Quantidade:</strong> {{ item.quantidade }}</p>
+    <p><strong>Valor:</strong> {{ item.valor }}</p>
+    <p><strong>Desconto:</strong> {{ item.desconto }}</p>
+
+    <form method="post" class="text-center">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">
+            <i class="fas fa-trash-alt"></i> Excluir Ítem
+        </button>
+        <a href="{% url 'detalhar_orcamento' orcamento.id %}" class="btn btn-secondary ml-2">
+            <i class="fas fa-times"></i> Cancelar
+        </a>
+    </form>
+</div>
+{% endblock %}

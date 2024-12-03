@@ -15,8 +15,7 @@ class OrcamentoForm(forms.ModelForm):
 class OrcamentoItemForm(forms.ModelForm):
     class Meta:
         model = OrcamentoItem
-        fields = ['id', 'idproduto', 'idproduto2', 'quantidade', 'valor', 'desconto']
-
+        exclude = ['idorcamento', 'subtotal']
         widgets = {
             'idproduto': forms.Select(attrs={'class': 'form-control'}),
             'idproduto2': forms.Select(attrs={'class': 'form-control'}),
@@ -24,3 +23,15 @@ class OrcamentoItemForm(forms.ModelForm):
             'valor': forms.NumberInput(attrs={'class': 'form-control'}),
             'desconto': forms.NumberInput(attrs={'class': 'form-control'}),
         }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        idproduto = cleaned_data.get('idproduto')
+        idproduto2 = cleaned_data.get('idproduto2')
+
+        if idproduto and idproduto2:
+            raise forms.ValidationError("Selecione apenas um: Produto ou Periférico, não ambos.")
+        if not idproduto and not idproduto2:
+            raise forms.ValidationError("Você deve selecionar um Produto ou um Periférico.")
+
+        return cleaned_data

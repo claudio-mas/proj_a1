@@ -25,6 +25,11 @@ class Orcamento(models.Model):
         verbose_name='Status'
     )
 
+    def atualizar_total(self):
+        total = self.orcamentoitem_set.aggregate(total=models.Sum('subtotal'))['total'] or 0
+        self.total = total
+        self.save()
+
     class Meta:
         verbose_name_plural = "4.1- Orçamentos"
         verbose_name = "Orçamento"

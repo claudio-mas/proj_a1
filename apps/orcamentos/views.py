@@ -63,15 +63,13 @@ def adicionar_item_orcamento(request, orcamento_id):
         if form.is_valid():
             item = form.save(commit=False)
             item.idorcamento = orcamento  # Associa o item ao orçamento
-            try:
-                # Calcula o subtotal
-                item.subtotal = (item.valor * item.quantidade) - item.desconto
-                item.save()
-                return redirect('detalhar_orcamento', orcamento_id=orcamento.id)
-            except Exception as e:
-                form.add_error(None, f"Ocorreu um erro ao salvar o item: {e}")
+            # Calcula o subtotal
+            item.subtotal = (item.valor * item.quantidade) - (item.desconto or 0)
+            item.save()
+            return redirect('detalhar_orcamento', orcamento.id)  # Redireciona para a página do orçamento
         else:
-            print(form.errors)  # Imprime os erros do formulário no console
+            # Se o formulário não for válido, os erros serão exibidos no template
+            pass
     else:
         form = OrcamentoItemForm()
     return render(request, 'adicionar_item_orcamento.html', {'form': form, 'orcamento': orcamento})
@@ -81,6 +79,33 @@ def detalhar_orcamento(request, orcamento_id):
     orcamento = get_object_or_404(Orcamento, id=orcamento_id)
     itens = OrcamentoItem.objects.filter(idorcamento=orcamento)
     return render(request, 'detalhar_orcamento.html', {'orcamento': orcamento, 'itens': itens})
+
+
+def editar_item_orcamento(request, orcamento_id, item_id):
+    orcamento = get_object_or_404(Orcamento, id=orcamento_id)
+    item = get_object_or_404(OrcamentoItem, id=item_id, idorcamento=orcamento)
+    if request.method == 'POST':
+        form = OrcamentoItemForm(request.POST, instance=item)
+        if form.is_valid():
+            item = form.save(commit=False)
+            # Recalcular o subtotal
+            item.subtotal = (item.valor * item.quantidade) - (item.desconto or 0)
+            item.save()
+            orcamento.atualizar_total()
+            return redirect('detalhar_orcamento', orcamento.id)
+    else:
+        form = OrcamentoItemForm(instance=item)
+    return render(request, 'editar_item_orcamento.html', {'form': form, 'orcamento': orcamento, 'item': item})
+
+
+def excluir_item_orcamento(request, orcamento_id, item_id):
+    orcamento = get_object_or_404(Orcamento, id=orcamento_id)
+    item = get_object_or_404(OrcamentoItem, id=item_id, idorcamento=orcamento)
+    if request.method == 'POST':
+        item.delete()
+        orcamento.atualizar_total()
+        return redirect('detalhar_orcamento', orcamento.id)
+    return render(request, 'confirmar_exclusao_item.html', {'orcamento': orcamento, 'item': item})
 
 
 class OrcamentoCreateView(CreateView):
