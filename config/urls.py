@@ -22,7 +22,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from apps.clientes import views
 from apps.orcamentos.views import lista_orcamentos, editar_orcamento, excluir_orcamento, detalhar_orcamento, adicionar_item_orcamento
-from apps.orcamentos.views import editar_item_orcamento, excluir_item_orcamento
+from apps.orcamentos.views import editar_item_orcamento, excluir_item_orcamento, itens_orcamento
 from apps.orcamentos.views import OrcamentoCreateView
 
 
@@ -42,6 +42,7 @@ urlpatterns = [
     path('orcamento/<int:orcamento_id>/adicionar_item/', adicionar_item_orcamento, name='adicionar_item_orcamento'),
     path('orcamento/<int:orcamento_id>/item/<int:item_id>/editar/', editar_item_orcamento, name='editar_item_orcamento'),
     path('orcamento/<int:orcamento_id>/item/<int:item_id>/excluir/', excluir_item_orcamento, name='excluir_item_orcamento'),
+    path('orcamento/<int:orcamento_id>/itens/', itens_orcamento, name='itens_orcamento'),
 ]
 
 if settings.DEBUG:

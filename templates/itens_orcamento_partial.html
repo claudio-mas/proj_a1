@@ -1,0 +1,24 @@
+<!-- itens_orcamento_partial.html -->
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Produto</th>
+            <th>Periférico</th>
+            <th>Quantidade</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in itens %}
+            <tr>
+                <td>{{ item.idproduto|default:"-" }}</td>
+                <td>{{ item.idproduto2|default:"-" }}</td>
+                <td>{{ item.quantidade }}</td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="3">Este orçamento não possui itens.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

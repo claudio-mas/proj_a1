@@ -11,6 +11,10 @@ class OrcamentoForm(forms.ModelForm):
             'validade': forms.DateInput(format='%Y-%m-%d', attrs={'type': 'date'}),
         }
 
+        def __init__(self, *args, **kwargs):
+            super(OrcamentoForm, self).__init__(*args, **kwargs)
+            self.fields['descricao'].widget.attrs.update({'style': 'height: 20px;'}) 
+
 
 class OrcamentoItemForm(forms.ModelForm):
     class Meta:

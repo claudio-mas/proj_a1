@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic.edit import CreateView
 from .models import Orcamento, OrcamentoItem
 from .forms import OrcamentoForm, OrcamentoItemForm
+from django.http import JsonResponse
+from django.template.loader import render_to_string
 
 
 # def lista_orcamentos(request):
@@ -27,7 +29,7 @@ def lista_orcamentos(request):
             'idcliente': orcamento.idcliente,
             'descricao': orcamento.descricao,
             'validade': orcamento.validade.strftime('%d/%m/%Y'),  # Formata a validade
-            'total': format_currency_value(orcamento.total),  # Formata o valor total
+            'total': orcamento.total,  # Formata o valor total
             'status': orcamento.status
         })
 
@@ -106,6 +108,13 @@ def excluir_item_orcamento(request, orcamento_id, item_id):
         orcamento.atualizar_total()
         return redirect('detalhar_orcamento', orcamento.id)
     return render(request, 'confirmar_exclusao_item.html', {'orcamento': orcamento, 'item': item})
+
+
+def itens_orcamento(request, orcamento_id):
+    orcamento = get_object_or_404(Orcamento, id=orcamento_id)
+    itens = OrcamentoItem.objects.filter(idorcamento=orcamento)
+    html = render_to_string('itens_orcamento_partial.html', {'itens': itens})
+    return JsonResponse({'html': html})
 
 
 class OrcamentoCreateView(CreateView):

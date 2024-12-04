@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% load crispy_forms_tags %}
+{% load custom_filters %}
 
 {% block content %}
 <div class="container mt-4">
@@ -28,7 +29,7 @@
                         {{ form.validade|as_crispy_field }}
                     </div>
                     <div class="col-md-6 mb-3">
-                        {{ form.total|as_crispy_field }}
+                        {{ form.total|as_crispy_field }} <!-- Renderiza normalmente -->                      
                     </div>
                     <div class="col-md-6 mb-3">
                         {{ form.status|as_crispy_field }}

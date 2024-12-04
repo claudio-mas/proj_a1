@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load custom_filters %}
+
 {% block content %}
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -7,33 +9,28 @@
     <meta charset="UTF-8">
     <title>Orçamentos</title>
     <style>
+        /* Estilos existentes */
         .container {
             display: flex;
             flex-direction: column;
             align-items: center;
             margin: 0 auto;
         }
-
         h1 {
             text-align: center;
             margin: 20px 0;
         }
-
         table {
             border-collapse: collapse;
             margin: 20px 0;
         }
-
         th, td {
             padding: 10px;
             text-align: center;
         }
-
         .btn-novo {
             margin-top: 20px;
         }
-
-        /* Estilos para os botões de ação */
         .btn-acao {
             margin: 0 5px;
             text-decoration: none;
@@ -47,6 +44,15 @@
         .btn-excluir {
             background-color: #dc3545;
             color: white;
+        }
+        .btn-itens {
+            background-color: #28a745;
+            color: white;
+        }
+        
+        /* Estilo para a linha selecionada */
+        .selected {
+            background-color: #d9edf7; /* Cor de fundo persistente */
         }
     </style>
 </head>
@@ -63,8 +69,8 @@
                     <th>Valor Total</th>
                     <th>Status</th>
                     <th>Observações</th>
-                    <!-- Novas colunas para ações -->
                     <th>Ações</th>
+                    <th>Ítens</th>
                 </tr>
             </thead>
             <tbody>
@@ -74,22 +80,55 @@
                         <td>{{ orcamento.data }}</td>
                         <td>{{ orcamento.idcliente }}</td>
                         <td>{{ orcamento.validade }}</td>
-                        <td>{{ orcamento.total }}</td>
+                        <td>{{ orcamento.total|format_currency }}</td>
                         <td>{{ orcamento.status }}</td>
                         <td>{{ orcamento.descricao }}</td>
-                        <!-- Botões de ação -->
                         <td>
                             <a href="{% url 'editar_orcamento' orcamento.id %}" class="btn-acao btn-editar">Editar</a>
                             <a href="{% url 'excluir_orcamento' orcamento.id %}" class="btn-acao btn-excluir" onclick="return confirm('Tem certeza que deseja excluir este orçamento?');">Excluir</a>
+                        </td>
+                        <td>
+                            <button class="btn-acao btn-itens" onclick="mostrarItens({{ orcamento.id }})">Ver Itens</button>
                         </td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
+
+        <!-- Container para itens -->
+        <div id="itens-container" style="float: right; width: 40%;"></div>
+
+        <!-- Botão para novo orçamento -->
         <div class="btn-novo">
             <a href="{% url 'novo_orcamento' %}" class="btn btn-primary">Novo Orçamento</a>
         </div>
+
     </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+    function mostrarItens(orcamentoId) {
+        $.ajax({
+            url: '/orcamento/' + orcamentoId + '/itens/',
+            type: 'GET',
+            success: function(data) {
+                $('#itens-container').html(data.html);
+            },
+            error: function(xhr, status, error) {
+                alert('Ocorreu um erro ao carregar os itens do orçamento.');
+            }
+        });
+    }
+
+    // Código para selecionar a linha
+    $('table tr').click(function() {
+        $('table tr').removeClass('selected'); // Remove a classe de seleção de todas as linhas
+        $(this).addClass('selected'); // Adiciona a classe à linha clicada
+    });
+    </script>
+
 </body>
 </html>
+
 {% endblock %}
