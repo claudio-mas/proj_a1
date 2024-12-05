@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from apps.estoque.models import Marca, Grupo
 
 
 class Orcamento(models.Model):
@@ -40,6 +41,8 @@ class Orcamento(models.Model):
 
 class OrcamentoItem(models.Model):
     id = models.AutoField(primary_key=True)
+    marca = models.ForeignKey(Marca, on_delete=models.CASCADE, verbose_name="Marca", null=True, blank=True)
+    grupo = models.ForeignKey(Grupo, on_delete=models.CASCADE, verbose_name="Grupo", null=True, blank=True)
     idorcamento = models.ForeignKey(Orcamento, on_delete=models.CASCADE, verbose_name="Orçamento")
     idproduto = models.ForeignKey('estoque.Produto', on_delete=models.CASCADE, blank=True, null=True, verbose_name="Produto")
     idproduto2 = models.ForeignKey('multimarcas.Produto2', on_delete=models.CASCADE, blank=True, null=True, verbose_name="Periférico")
@@ -53,4 +56,5 @@ class OrcamentoItem(models.Model):
         verbose_name = "Itens do Orçamento"
 
     def __str__(self):
-        return f"{self.idorcamento.numero} - {self.idproduto.produto}"
+        produto_nome = self.idproduto.produto if self.idproduto else 'Sem Produto'
+        return f"{self.idorcamento.numero} - {produto_nome}"

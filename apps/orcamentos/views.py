@@ -64,14 +64,11 @@ def adicionar_item_orcamento(request, orcamento_id):
         form = OrcamentoItemForm(request.POST)
         if form.is_valid():
             item = form.save(commit=False)
-            item.idorcamento = orcamento  # Associa o item ao orçamento
+            item.idorcamento = orcamento
             # Calcula o subtotal
             item.subtotal = (item.valor * item.quantidade) - (item.desconto or 0)
             item.save()
-            return redirect('detalhar_orcamento', orcamento.id)  # Redireciona para a página do orçamento
-        else:
-            # Se o formulário não for válido, os erros serão exibidos no template
-            pass
+            return redirect('detalhar_orcamento', orcamento.id)
     else:
         form = OrcamentoItemForm()
     return render(request, 'adicionar_item_orcamento.html', {'form': form, 'orcamento': orcamento})

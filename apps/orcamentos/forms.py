@@ -1,5 +1,6 @@
 from django import forms
 from .models import Orcamento, OrcamentoItem
+from apps.estoque.models import Marca, Grupo, Produto
 
 
 class OrcamentoForm(forms.ModelForm):
@@ -17,10 +18,29 @@ class OrcamentoForm(forms.ModelForm):
 
 
 class OrcamentoItemForm(forms.ModelForm):
+    marca = forms.ModelChoiceField(
+        queryset=Marca.objects.all(),
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        required=True
+    )
+    grupo = forms.ModelChoiceField(
+        queryset=Grupo.objects.none(),
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        required=True
+    )
+    idproduto = forms.ModelChoiceField(
+        queryset=Produto.objects.none(),
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        required=True,
+        label="Produto"
+    )
+
     class Meta:
         model = OrcamentoItem
         exclude = ['idorcamento', 'subtotal']
         widgets = {
+            'marca': forms.Select(attrs={'class': 'form-control'}),
+            'grupo': forms.Select(attrs={'class': 'form-control'}),
             'idproduto': forms.Select(attrs={'class': 'form-control'}),
             'idproduto2': forms.Select(attrs={'class': 'form-control'}),
             'quantidade': forms.NumberInput(attrs={'class': 'form-control'}),
@@ -39,3 +59,33 @@ class OrcamentoItemForm(forms.ModelForm):
             raise forms.ValidationError("Você deve selecionar um Produto ou um Periférico.")
 
         return cleaned_data
+
+    def __init__(self, *args, **kwargs):
+        super(OrcamentoItemForm, self).__init__(*args, **kwargs)
+        if 'marca' in self.data:
+            try:
+                marca_id = int(self.data.get('marca'))
+                self.fields['grupo'].queryset = Grupo.objects.filter(idmarca_id=marca_id).order_by('grupo')
+            except (ValueError, TypeError):
+                self.fields['grupo'].queryset = Grupo.objects.none()
+        elif self.instance.pk:
+            if self.instance.marca:
+                self.fields['grupo'].queryset = Grupo.objects.filter(idmarca=self.instance.marca).order_by('grupo')
+            else:
+                self.fields['grupo'].queryset = Grupo.objects.none()
+        else:
+            self.fields['grupo'].queryset = Grupo.objects.none()
+
+        if 'grupo' in self.data:
+            try:
+                grupo_id = int(self.data.get('grupo'))
+                self.fields['idproduto'].queryset = Produto.objects.filter(idgrupo_id=grupo_id).order_by('produto')
+            except (ValueError, TypeError):
+                self.fields['idproduto'].queryset = Produto.objects.none()
+        elif self.instance.pk:
+            if self.instance.grupo:
+                self.fields['idproduto'].queryset = Produto.objects.filter(idgrupo=self.instance.grupo).order_by('produto')
+            else:
+                self.fields['idproduto'].queryset = Produto.objects.none()
+        else:
+            self.fields['idproduto'].queryset = Produto.objects.none()

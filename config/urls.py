@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from apps.estoque.views import index
+from apps.estoque.views import index, ajax_carregar_grupos, ajax_carregar_produtos, ajax_obter_preco_produto
 from apps.clientes.views import lista_clientes
 from django.conf import settings
 from django.conf.urls.static import static
@@ -43,6 +43,9 @@ urlpatterns = [
     path('orcamento/<int:orcamento_id>/item/<int:item_id>/editar/', editar_item_orcamento, name='editar_item_orcamento'),
     path('orcamento/<int:orcamento_id>/item/<int:item_id>/excluir/', excluir_item_orcamento, name='excluir_item_orcamento'),
     path('orcamento/<int:orcamento_id>/itens/', itens_orcamento, name='itens_orcamento'),
+    path('ajax/carregar-grupos/', ajax_carregar_grupos, name='ajax_carregar_grupos'),
+    path('ajax/carregar-produtos/', ajax_carregar_produtos, name='ajax_carregar_produtos'),
+    path('ajax/obter-preco-produto/', ajax_obter_preco_produto, name='ajax_obter_preco_produto'),
 ]
 
 if settings.DEBUG:
