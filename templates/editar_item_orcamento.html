@@ -13,18 +13,26 @@
         <div class="card-body">
             <form method="post">
                 {% csrf_token %}
+                <!-- Exibe erros gerais do formulário -->
                 {% if form.non_field_errors %}
                     <div class="alert alert-danger">
                         {{ form.non_field_errors }}
                     </div>
                 {% endif %}
                 <div class="row">
-                    <div class="col-md-6 mb-3">
+                    <!-- Campo Marca -->
+                    <div class="col-md-4 mb-3">
+                        {{ form.marca|as_crispy_field }}
+                    </div>
+                    <!-- Campo Grupo -->
+                    <div class="col-md-4 mb-3">
+                        {{ form.grupo|as_crispy_field }}
+                    </div>
+                    <!-- Campo Produto -->
+                    <div class="col-md-4 mb-3">
                         {{ form.idproduto|as_crispy_field }}
                     </div>
-                    <div class="col-md-6 mb-3">
-                        {{ form.idproduto2|as_crispy_field }}
-                    </div>
+                    <!-- Campos Restantes -->
                     <div class="col-md-4 mb-3">
                         {{ form.quantidade|as_crispy_field }}
                     </div>
@@ -48,4 +56,102 @@
         </div>
     </div>
 </div>
+
+<!-- Inclua o jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- JavaScript para atualizar os comboboxes -->
+<script type="text/javascript">
+    $(document).ready(function () {
+        // Ao carregar a página, se já houver valores selecionados, carregue os grupos e produtos correspondentes
+        var marcaInicial = $('select[name="marca"]').val();
+        if (marcaInicial) {
+            atualizarGrupos(marcaInicial, '{{ form.grupo.value|default:"" }}');
+        }
+
+        var grupoInicial = $('select[name="grupo"]').val();
+        if (grupoInicial) {
+            atualizarProdutos(grupoInicial, '{{ form.idproduto.value|default:"" }}');
+        }
+
+        // Evento ao mudar a Marca
+        $('select[name="marca"]').on('change', function () {
+            var marcaId = $(this).val();
+            if (marcaId) {
+                atualizarGrupos(marcaId, null);
+            } else {
+                $('select[name="grupo"]').html('<option value="">---------</option>');
+                $('select[name="idproduto"]').html('<option value="">---------</option>');
+                $('input[name="valor"]').val('');
+            }
+        });
+
+        // Evento ao mudar o Grupo
+        $('select[name="grupo"]').on('change', function () {
+            var grupoId = $(this).val();
+            if (grupoId) {
+                atualizarProdutos(grupoId, null);
+            } else {
+                $('select[name="idproduto"]').html('<option value="">---------</option>');
+                $('input[name="valor"]').val('');
+            }
+        });
+
+        // Evento ao mudar o Produto
+        $('select[name="idproduto"]').on('change', function () {
+            var produtoId = $(this).val();
+            if (produtoId) {
+                $.ajax({
+                    url: "{% url 'ajax_obter_preco_produto' %}",
+                    data: {
+                        'produto_id': produtoId
+                    },
+                    success: function (data) {
+                        $('input[name="valor"]').val(data.preco);
+                    }
+                });
+            } else {
+                $('input[name="valor"]').val('');
+            }
+        });
+
+        // Função para atualizar os Grupos
+        function atualizarGrupos(marcaId, grupoSelecionado) {
+            $.ajax({
+                url: "{% url 'ajax_carregar_grupos' %}",
+                data: {
+                    'marca_id': marcaId
+                },
+                success: function (data) {
+                    $('select[name="grupo"]').html(data);
+                    if (grupoSelecionado) {
+                        $('select[name="grupo"]').val(grupoSelecionado);
+                        $('select[name="grupo"]').trigger('change');
+                    } else {
+                        $('select[name="idproduto"]').html('<option value="">---------</option>');
+                        $('input[name="valor"]').val('');
+                    }
+                }
+            });
+        }
+
+        // Função para atualizar os Produtos
+        function atualizarProdutos(grupoId, produtoSelecionado) {
+            $.ajax({
+                url: "{% url 'ajax_carregar_produtos' %}",
+                data: {
+                    'grupo_id': grupoId
+                },
+                success: function (data) {
+                    $('select[name="idproduto"]').html(data);
+                    if (produtoSelecionado) {
+                        $('select[name="idproduto"]').val(produtoSelecionado);
+                        $('select[name="idproduto"]').trigger('change');
+                    } else {
+                        $('input[name="valor"]').val('');
+                    }
+                }
+            });
+        }
+    });
+</script>
 {% endblock %}

@@ -2,6 +2,8 @@
 
 {% load crispy_forms_tags %}
 
+{% load custom_filters %}
+
 {% block content %}
 <div class="container mt-4">
     <h1 class="text-center mb-4">Adicionar Orçamento</h1>
@@ -36,7 +38,8 @@
                 </div>
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        {{ form.descricao|as_crispy_field }}
+                        <label for="{{ form.descricao.id_for_label }}">{{ form.descricao.label }}</label>
+                        {{ form.descricao|add_class:"half-height half-width" }}
                     </div>
                 </div>
                     <!-- Botão Salvar -->
@@ -68,4 +71,12 @@
     </div> -->
 
 </div>
+<style>
+    .half-height {
+        height: 50%; /* Ajuste o valor conforme necessário */
+    }
+    .half-width {
+        width: 100%; /* Ajuste o valor conforme necessário */
+    }
+</style>
 {% endblock %}

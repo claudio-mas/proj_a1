@@ -22,3 +22,8 @@ def format_currency(value):
         return f"R$ {value:,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.')
     except (ValueError, TypeError):
         return "R$ 0,00"
+
+
+@register.filter(name='add_class')
+def add_class(field, css_class):
+    return field.as_widget(attrs={"class": css_class})
